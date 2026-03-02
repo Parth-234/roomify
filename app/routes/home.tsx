@@ -18,12 +18,10 @@ export function meta({}: Route.MetaArgs) {
 export default function Home() {
 
     const navigate = useNavigate();
-    const handleUploadComplete = async (base64Image: string) => {
-        const newId = Date.now().toString()
-
-        navigate(`/visualizer/${newId}`)
-
-        return true;
+    const handleUploadComplete = (base64Image: string) => {
+        const newId = crypto.randomUUID();
+        sessionStorage.setItem(`upload:${newId}`, base64Image);
+        navigate(`/visualizer/${newId}`);
     }
 
   return(
