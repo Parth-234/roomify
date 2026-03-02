@@ -74,6 +74,7 @@ const Upload = ({ onComplete }: UploadProps) => {
         setIsDragging(false);
     };
 
+    const MAX_FILE_SIZE_BYTES = 50 * 1024 * 1024;
     const handleDrop = (e: React.DragEvent) => {
         e.preventDefault();
         setIsDragging(false);
@@ -82,7 +83,11 @@ const Upload = ({ onComplete }: UploadProps) => {
 
         const droppedFile = e.dataTransfer.files[0];
         const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-        if (droppedFile && allowedTypes.includes(droppedFile.type)) {
+        if (
+            droppedFile &&
+            allowedTypes.includes(droppedFile.type) &&
+            droppedFile.size <= MAX_FILE_SIZE_BYTES
+            ) {
             processFile(droppedFile);
         }
     };
@@ -91,7 +96,7 @@ const Upload = ({ onComplete }: UploadProps) => {
         if (!isSignedIn) return;
 
         const selectedFile = e.target.files?.[0];
-        if (selectedFile) {
+        if (selectedFile && selectedFile.size <= MAX_FILE_SIZE_BYTES) {
             processFile(selectedFile);
         }
     };
